@@ -61,6 +61,13 @@
 #define USE_SERIAL_TELEMETRY
 #endif
 
+#ifdef ARDUBEE
+#define FIRMWARE_NAME           "ArduBee     "
+#define DEAD_TIME               13
+#define HARDWARE_GROUP_F0_B
+#define USE_SERIAL_TELEMETRY
+#endif
+
 #ifdef TMOTOR45
 #define FIRMWARE_NAME           "T-MOTOR 45A "
 #define DEAD_TIME               45
