@@ -42,7 +42,8 @@ jobs:
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
 
       - name: Build All Targets
-        run: make all
+        run: |
+          make all
 
       - name: Upload Bin Files
         uses: actions/upload-artifact@v2
