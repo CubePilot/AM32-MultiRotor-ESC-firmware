@@ -43,7 +43,7 @@ jobs:
 
       - name: Build All Targets
         run: |
-          make all
+          make f070
 
       - name: Upload Bin Files
         uses: actions/upload-artifact@v2
