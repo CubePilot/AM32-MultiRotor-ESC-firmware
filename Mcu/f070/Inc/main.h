@@ -29,7 +29,6 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_ll_adc.h"
-#include "stm32f0xx_ll_comp.h"
 #include "stm32f0xx_ll_dma.h"
 #include "stm32f0xx_ll_iwdg.h"
 #include "stm32f0xx_ll_crs.h"
@@ -41,8 +40,8 @@ extern "C" {
 #include "stm32f0xx_ll_utils.h"
 #include "stm32f0xx_ll_pwr.h"
 #include "stm32f0xx_ll_tim.h"
-#include "stm32f0xx_ll_usart.h"
 #include "stm32f0xx_ll_gpio.h"
+#include "stm32f0xx_ll_usart.h"
 
 #if defined(USE_FULL_ASSERT)
 #include "stm32_assert.h"

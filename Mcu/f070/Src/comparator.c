@@ -7,49 +7,46 @@
 
 #include "comparator.h"
 #include "targets.h"
+#include "common.h"
 
-COMP_TypeDef* active_COMP = COMP1;
+uint32_t current_GPIO_PIN;
+GPIO_TypeDef* current_GPIO_PORT;
+uint32_t current_EXTI_LINE = 0;
+
 
 void maskPhaseInterrupts(){
-	EXTI->IMR &= ~(1 << 21);
-	LL_EXTI_ClearFlag_0_31(EXTI_LINE);
+		EXTI->IMR &= (0 << current_EXTI_LINE);
+		LL_EXTI_ClearFlag_0_31(current_EXTI_LINE);
 }
 
 void enableCompInterrupts(){
-    EXTI->IMR |= (1 << 21);
+	EXTI->IMR |= (1 << current_EXTI_LINE);
+}
+
+void changeCompInput(){
+	if (step == 1 || step == 4){
+		current_GPIO_PIN  = PHASE_C_EXTI_PIN;
+		current_GPIO_PORT = PHASE_C_EXTI_PORT;
+		current_EXTI_LINE = PHASE_C_EXTI_LINE;
+		}
+	    if (step == 2 || step == 5){            //        in phase two or 5 read from phase A PF
+	    current_GPIO_PIN  = PHASE_A_EXTI_PIN;
+	    current_GPIO_PORT = PHASE_A_EXTI_PORT;
+	    current_EXTI_LINE = PHASE_A_EXTI_LINE;
+		}
+	    if (step == 3 || step == 6){
+	    current_GPIO_PIN  = PHASE_B_EXTI_PIN;
+	    current_GPIO_PORT = PHASE_B_EXTI_PORT;
+	    current_EXTI_LINE = PHASE_B_EXTI_LINE;
+		}
+	    if (rising){
+			EXTI->RTSR |= (1 << current_EXTI_LINE);
+			EXTI->FTSR &= (0 << current_EXTI_LINE);
+		}else{
+			EXTI->FTSR |= (1 << current_EXTI_LINE);
+			EXTI->RTSR &= (0 << current_EXTI_LINE);
+		}
 }
 
 
-void changeCompInput()
-{
-	//	TIM3->CNT = 0;
-	//	HAL_COMP_Stop_IT(&hcomp1);            // done in comparator interrupt routine
 
-	if (step == 1 || step == 4)
-	{   // c floating
-		COMP->CSR = PHASE_C_COMP;
-	}
-	if (step == 2 || step == 5)
-	{   // a floating
-		COMP->CSR = PHASE_A_COMP;
-	}
-	if (step == 3 || step == 6)
-	{   // b floating
-		COMP->CSR = PHASE_B_COMP;
-	}
-	if (rising)
-	{
-
-		EXTI->RTSR = 0x0;
-		EXTI->FTSR = 0x200000;
-
-		//	hcomp1.Init.TriggerMode = COMP_TRIGGERMODE_IT_FALLING;   // polarity of comp output reversed
-	}else{
-		// falling bemf
-		EXTI->FTSR = 0x0;
-		EXTI->RTSR = 0x200000;
-		//	hcomp1.Init.TriggerMode = COMP_TRIGGERMODE_IT_RISING;
-	}
-
-
-}

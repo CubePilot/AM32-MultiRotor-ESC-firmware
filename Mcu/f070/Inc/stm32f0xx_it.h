@@ -54,19 +54,17 @@ void PendSV_Handler(void);
 void SysTick_Handler(void);
 void DMA1_Channel2_3_IRQHandler(void);
 void DMA1_Channel4_5_IRQHandler(void);
-void ADC1_COMP_IRQHandler(void);
-void TIM6_DAC_IRQHandler(void);
+void TIM2_IRQHandler(void);
 void TIM14_IRQHandler(void);
 void TIM16_IRQHandler(void);
-void USART1_IRQHandler(void);
 /* USER CODE BEGIN EFP */
-void TIM15_IRQHandler(void);
-void TIM3_IRQHandler(void);
-void DMA1_Channel1_IRQHandler(void);
-void DMA1_Channel2_3_IRQHandler(void);
-void TIM1_BRK_UP_TRG_COM_IRQHandler(void);
+
+
+void TIM2_IRQHandler(void);
+void EXTI0_1_IRQHandler(void);
 void EXTI2_3_IRQHandler(void);
-void EXTI4_15_IRQHandler(void);
+void DMA1_Channel4_5_IRQHandler(void);
+void DMA1_Channel1_IRQHandler(void);
 /* USER CODE END EFP */
 
 #ifdef __cplusplus
@@ -74,7 +72,5 @@ void EXTI4_15_IRQHandler(void);
 #endif
 
 #endif /* __STM32F0xx_IT_H */
-
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
