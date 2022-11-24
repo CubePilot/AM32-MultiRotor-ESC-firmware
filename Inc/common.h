@@ -36,17 +36,17 @@ extern uint16_t send_extended_dshot;
 //	int16_t output_limit;
 //}PID;
 
-typedef struct fastPID{
-	int32_t error;
-	uint32_t Kp;
-	uint32_t Ki;
-	uint32_t Kd;
-	int32_t integral;
-	int32_t derivative;
-	int32_t last_error;
-	int32_t pid_output;
-	int32_t integral_limit;
-	int32_t output_limit;
-}fastPID;
+typedef struct fastPID {
+    int32_t error;
+    uint32_t Kp;
+    uint32_t Ki;
+    uint32_t Kd;
+    int32_t integral;
+    int32_t derivative;
+    int32_t last_error;
+    int32_t pid_output;
+    int32_t integral_limit;
+    int32_t output_limit;
+} fastPID;
 
 
