@@ -23,7 +23,6 @@ void initCorePeripherals(void){
   MX_DMA_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
-  MX_COMP1_Init();
   MX_TIM14_Init();
   MX_TIM6_Init();
   MX_TIM17_Init();	 
@@ -116,43 +115,6 @@ void SystemClock_Config(void)
   LL_RCC_HSI14_EnableADCControl();
   LL_RCC_SetUSARTClockSource(LL_RCC_USART1_CLKSOURCE_PCLK1);
 }
-
-
-void MX_COMP1_Init(void)
-{
-
-LL_COMP_InitTypeDef COMP_InitStruct = {0};
-
-  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
-  /**COMP1 GPIO Configuration
-  PA1   ------> COMP1_INP
-  PA5   ------> COMP1_INM
-  */
-  GPIO_InitStruct.Pin = LL_GPIO_PIN_1;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = LL_GPIO_PIN_5;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  NVIC_SetPriority(ADC1_COMP_IRQn, 0);
-  NVIC_EnableIRQ(ADC1_COMP_IRQn);
-
-  COMP_InitStruct.PowerMode = LL_COMP_POWERMODE_HIGHSPEED;
-  COMP_InitStruct.InputPlus = LL_COMP_INPUT_PLUS_IO1;
-  COMP_InitStruct.InputMinus = LL_COMP_INPUT_MINUS_DAC1_CH2;
-  COMP_InitStruct.InputHysteresis = LL_COMP_HYSTERESIS_NONE;
-  COMP_InitStruct.OutputSelection = LL_COMP_OUTPUT_NONE;
-  COMP_InitStruct.OutputPolarity = LL_COMP_OUTPUTPOL_NONINVERTED;
-  LL_COMP_Init(COMP1, &COMP_InitStruct);
-
-}
-
 
 void MX_IWDG_Init(void)
 {
@@ -312,6 +274,21 @@ void MX_TIM1_Init(void)
   GPIO_InitStruct.Alternate = LL_GPIO_AF_2;
   LL_GPIO_Init(PHASE_C_GPIO_PORT_HIGH, &GPIO_InitStruct);
 
+  // GPIO_InitStruct.Pin = LL_GPIO_PIN_11;
+  // GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
+  // GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  // GPIO_InitStruct.OutputType = HIGH_OUTPUT_TYPE;
+  // GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  // GPIO_InitStruct.Alternate = LL_GPIO_AF_2;
+  LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_11);
+
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_11;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 2);
   NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
 
@@ -441,9 +418,10 @@ void MX_GPIO_Init(void)
   /**/
   LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_15);
 
+  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+
   /**/
   #ifdef USE_ALKAS_DEBUG_LED
-    LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     GPIO_InitStruct.Pin = LL_GPIO_PIN_15;
     GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
@@ -452,6 +430,26 @@ void MX_GPIO_Init(void)
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
   #endif
+
+  // LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_6);
+
+  // GPIO_InitStruct.Pin = LL_GPIO_PIN_6;
+  // GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  // GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  // GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  // GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  // LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+  // /**/
+  LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_7);
+
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_7;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 

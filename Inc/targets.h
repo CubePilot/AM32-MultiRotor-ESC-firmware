@@ -1011,10 +1011,11 @@
 #define UTILITY_TIMER      TIM17
 #define COM_TIMER          TIM14
 #define TIM1_AUTORELOAD    1999
+#define NUM_SAMPLES 900
 #define APPLICATION_ADDRESS 0x08001000
 #define MAIN_COMP	COMP1
 #define EXTI_LINE   LL_EXTI_LINE_21
-#define TARGET_MIN_BEMF_COUNTS 6
+#define TARGET_MIN_BEMF_COUNTS 2
 //#define USE_SERIAL_TELEMETRY // moved to individual ESCs
 #define USE_ADC
 #endif
@@ -1028,7 +1029,7 @@
 #define COM_TIMER          TIM14
 #define TIM1_AUTORELOAD    1999
 #define APPLICATION_ADDRESS 0x08001000
-#define TARGET_MIN_BEMF_COUNTS 3
+#define TARGET_MIN_BEMF_COUNTS 6
 //#define USE_SERIAL_TELEMETRY // moved to individual ESCs
 #define USE_ADC
 #endif

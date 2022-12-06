@@ -351,7 +351,7 @@ int16_t actual_current = 0;
 
 char lowkv = 0;
 
-uint16_t min_startup_duty = 120;
+uint16_t min_startup_duty = 400;
 uint16_t sin_mode_min_s_d = 120;
 char bemf_timeout = 10;
 
@@ -389,14 +389,15 @@ uint32_t average_interval = 0;
 uint32_t last_average_interval;
 int e_com_time;
 
-uint16_t ADC_smoothed_input = 0;
+// uint16_t ADC_smoothed_input = 0;
 uint8_t degrees_celsius;
 uint16_t converted_degrees;
 uint8_t temperature_offset;
-uint16_t ADC_raw_temp;
-uint16_t ADC_raw_volts;
-uint16_t ADC_raw_current;
-uint16_t ADC_raw_input;
+// uint16_t ADC_raw_temp;
+// uint16_t ADC_raw_volts;
+// uint16_t ADC_raw_current;
+// uint16_t ADC_raw_input;
+// uint16_t ADC_raw_centre_voltage;
 uint8_t adc_counter = 0;
 char send_telemetry = 0;
 char telemetry_done = 0;
@@ -432,52 +433,52 @@ char rising = 1;
 //const int pwmSin[] ={128, 132, 136, 140, 143, 147, 151, 155, 159, 162, 166, 170, 174, 178, 181, 185, 189, 192, 196, 200, 203, 207, 211, 214, 218, 221, 225, 228, 232, 235, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 248, 249, 250, 250, 251, 252, 252, 253, 253, 253, 254, 254, 254, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 254, 254, 254, 253, 253, 253, 252, 252, 251, 250, 250, 249, 248, 248, 247, 246, 245, 244, 243, 242, 241, 240, 239, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 248, 249, 250, 250, 251, 252, 252, 253, 253, 253, 254, 254, 254, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 254, 254, 254, 253, 253, 253, 252, 252, 251, 250, 250, 249, 248, 248, 247, 246, 245, 244, 243, 242, 241, 240, 239, 238, 235, 232, 228, 225, 221, 218, 214, 211, 207, 203, 200, 196, 192, 189, 185, 181, 178, 174, 170, 166, 162, 159, 155, 151, 147, 143, 140, 136, 132, 128, 124, 120, 116, 113, 109, 105, 101, 97, 94, 90, 86, 82, 78, 75, 71, 67, 64, 60, 56, 53, 49, 45, 42, 38, 35, 31, 28, 24, 21, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 8, 7, 6, 6, 5, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 8, 7, 6, 6, 5, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 21, 24, 28, 31, 35, 38, 42, 45, 49, 53, 56, 60, 64, 67, 71, 75, 78, 82, 86, 90, 94, 97, 101, 105, 109, 113, 116, 120, 124};
 
 ////Sine Wave PWM ///////////////////
-int16_t pwmSin[] = {180,183,186,189,193,196,199,202,
-                    205,208,211,214,217,220,224,227,
-                    230,233,236,239,242,245,247,250,
-                    253,256,259,262,265,267,270,273,
-                    275,278,281,283,286,288,291,293,
-                    296,298,300,303,305,307,309,312,
-                    314,316,318,320,322,324,326,327,
-                    329,331,333,334,336,337,339,340,
-                    342,343,344,346,347,348,349,350,
-                    351,352,353,354,355,355,356,357,
-                    357,358,358,359,359,359,360,360,
-                    360,360,360,360,360,360,360,359,
-                    359,359,358,358,357,357,356,355,
-                    355,354,353,352,351,350,349,348,
-                    347,346,344,343,342,340,339,337,
-                    336,334,333,331,329,327,326,324,
-                    322,320,318,316,314,312,309,307,
-                    305,303,300,298,296,293,291,288,
-                    286,283,281,278,275,273,270,267,
-                    265,262,259,256,253,250,247,245,
-                    242,239,236,233,230,227,224,220,
-                    217,214,211,208,205,202,199,196,
-                    193,189,186,183,180,177,174,171,
-                    167,164,161,158,155,152,149,146,
-                    143,140,136,133,130,127,124,121,
-                    118,115,113,110,107,104,101,98,
-                    95,93,90,87,85,82,79,77,
-                    74,72,69,67,64,62,60,57,
-                    55,53,51,48,46,44,42,40,
-                    38,36,34,33,31,29,27,26,
-                    24,23,21,20,18,17,16,14,
-                    13,12,11,10,9,8,7,6,
-                    5,5,4,3,3,2,2,1,
-                    1,1,0,0,0,0,0,0,
-                    0,0,0,1,1,1,2,2,
-                    3,3,4,5,5,6,7,8,
-                    9,10,11,12,13,14,16,17,
-                    18,20,21,23,24,26,27,29,
-                    31,33,34,36,38,40,42,44,
-                    46,48,51,53,55,57,60,62,
-                    64,67,69,72,74,77,79,82,
-                    85,87,90,93,95,98,101,104,
-                    107,110,113,115,118,121,124,127,
-                    130,133,136,140,143,146,149,152,
-                    155,158,161,164,167,171,174,177
-                   };
+// int16_t pwmSin[] = {180,183,186,189,193,196,199,202,
+//                     205,208,211,214,217,220,224,227,
+//                     230,233,236,239,242,245,247,250,
+//                     253,256,259,262,265,267,270,273,
+//                     275,278,281,283,286,288,291,293,
+//                     296,298,300,303,305,307,309,312,
+//                     314,316,318,320,322,324,326,327,
+//                     329,331,333,334,336,337,339,340,
+//                     342,343,344,346,347,348,349,350,
+//                     351,352,353,354,355,355,356,357,
+//                     357,358,358,359,359,359,360,360,
+//                     360,360,360,360,360,360,360,359,
+//                     359,359,358,358,357,357,356,355,
+//                     355,354,353,352,351,350,349,348,
+//                     347,346,344,343,342,340,339,337,
+//                     336,334,333,331,329,327,326,324,
+//                     322,320,318,316,314,312,309,307,
+//                     305,303,300,298,296,293,291,288,
+//                     286,283,281,278,275,273,270,267,
+//                     265,262,259,256,253,250,247,245,
+//                     242,239,236,233,230,227,224,220,
+//                     217,214,211,208,205,202,199,196,
+//                     193,189,186,183,180,177,174,171,
+//                     167,164,161,158,155,152,149,146,
+//                     143,140,136,133,130,127,124,121,
+//                     118,115,113,110,107,104,101,98,
+//                     95,93,90,87,85,82,79,77,
+//                     74,72,69,67,64,62,60,57,
+//                     55,53,51,48,46,44,42,40,
+//                     38,36,34,33,31,29,27,26,
+//                     24,23,21,20,18,17,16,14,
+//                     13,12,11,10,9,8,7,6,
+//                     5,5,4,3,3,2,2,1,
+//                     1,1,0,0,0,0,0,0,
+//                     0,0,0,1,1,1,2,2,
+//                     3,3,4,5,5,6,7,8,
+//                     9,10,11,12,13,14,16,17,
+//                     18,20,21,23,24,26,27,29,
+//                     31,33,34,36,38,40,42,44,
+//                     46,48,51,53,55,57,60,62,
+//                     64,67,69,72,74,77,79,82,
+//                     85,87,90,93,95,98,101,104,
+//                     107,110,113,115,118,121,124,127,
+//                     130,133,136,140,143,146,149,152,
+//                     155,158,161,164,167,171,174,177
+//                    };
 
 
 //int sin_divider = 2;
@@ -524,7 +525,9 @@ uint16_t commutation_interval = 12500;
 uint16_t waitTime = 0;
 uint16_t signaltimeout = 0;
 uint8_t ubAnalogWatchdogStatus = RESET;
-
+int8_t phase_num = -1;
+uint32_t running_time = 0;
+uint32_t runtime = 20000;
 
 void checkForHighSignal()
 {
@@ -634,11 +637,11 @@ void loadEEpromSettings()
     }
 
     if (eepromBuffer[25] < 151 && eepromBuffer[25] > 49) {
-        min_startup_duty = (eepromBuffer[25] + DEAD_TIME) * TIMER1_MAX_ARR / 2000;
+        // min_startup_duty = (eepromBuffer[25] + DEAD_TIME) * TIMER1_MAX_ARR / 2000;
         minimum_duty_cycle = (eepromBuffer[25]/ 2 + DEAD_TIME/3) * TIMER1_MAX_ARR / 2000 ;
         stall_protect_minimum_duty = minimum_duty_cycle+10;
     } else {
-        min_startup_duty = 150;
+        // min_startup_duty = 150;
         minimum_duty_cycle = (min_startup_duty / 2) + 10;
     }
     motor_kv = (eepromBuffer[26] * 40) + 20;
@@ -705,7 +708,7 @@ void loadEEpromSettings()
             if (dead_time_override > 200) {
                 dead_time_override = 200;
             }
-            min_startup_duty = eepromBuffer[25] + dead_time_override;
+            // min_startup_duty = eepromBuffer[25] + dead_time_override;
             minimum_duty_cycle = eepromBuffer[25]/2 + dead_time_override;
             throttle_max_at_low_rpm  = throttle_max_at_low_rpm + dead_time_override;
             startup_max_duty_cycle = startup_max_duty_cycle  + dead_time_override;
@@ -797,41 +800,173 @@ void getSmoothedInput()
 
 }
 
+// uint32_t num_runs;
+// extern uint16_t old_data[2][2*NUM_SAMPLES];
+// extern uint8_t aTxBuffer[NUM_SAMPLES*2];
+extern uint8_t buf_count;
+// uint16_t send_telem;
+// uint8_t sent_count = 0;
+// uint8_t do_send_telem = 0;
+extern uint16_t ADCDataDMA[2*NUM_SAMPLES];
+uint16_t last_data_index = 0;
 void getBemfState()
 {
-    uint8_t current_state = 0;
-#ifdef MCU_F031
     if (step == 1 || step == 4) {
-        current_state = PHASE_C_EXTI_PORT->IDR & PHASE_C_EXTI_PIN;
+        if (phase_num != 2) {  
+            phase_num = 2;
+            // //stop conversion
+            LL_ADC_REG_StopConversion(ADC1);
+            while (LL_ADC_REG_IsStopConversionOngoing(ADC1)) {
+            }
+            while (LL_ADC_REG_IsConversionOngoing(ADC1)) {
+            }
+            // Reset DMA
+            LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_1);
+            while (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_1)) {
+            }
+            LL_DMA_ClearFlag_GI1(DMA1);
+            LL_DMA_SetDataLength(DMA1,
+                    LL_DMA_CHANNEL_1,
+                    2*NUM_SAMPLES);
+            LL_DMA_EnableChannel(DMA1,
+                                LL_DMA_CHANNEL_1);
+            
+            LL_ADC_REG_SetSequencerChannels(ADC1, LL_ADC_CHANNEL_5 | LL_ADC_CHANNEL_1);
+            LL_ADC_REG_SetSequencerScanDirection(ADC1, LL_ADC_REG_SEQ_SCAN_DIR_BACKWARD);
+            // Start Conversion
+            LL_ADC_REG_StartConversion(ADC1);
+            last_data_index = 0;
+        }
     }
     if (step == 2 || step == 5) {           //        in phase two or 5 read from phase A Pf1
-        current_state = PHASE_A_EXTI_PORT->IDR & PHASE_A_EXTI_PIN;
+        if (phase_num != 0) {  
+            phase_num = 0; 
+            // // stop conversion
+            LL_ADC_REG_StopConversion(ADC1);
+            while (LL_ADC_REG_IsStopConversionOngoing(ADC1)) {
+            }
+            while (LL_ADC_REG_IsConversionOngoing(ADC1)) {
+            }
+            // Reset DMA
+            LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_1);
+            while (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_1)) {
+            }
+            LL_DMA_ClearFlag_GI1(DMA1);
+            LL_DMA_SetDataLength(DMA1,
+                    LL_DMA_CHANNEL_1,
+                    2*NUM_SAMPLES);
+            LL_DMA_EnableChannel(DMA1,
+                                LL_DMA_CHANNEL_1);
+
+            LL_ADC_REG_SetSequencerChannels(ADC1, LL_ADC_CHANNEL_0 | LL_ADC_CHANNEL_1);
+            LL_ADC_REG_SetSequencerScanDirection(ADC1, LL_ADC_REG_SEQ_SCAN_DIR_FORWARD);
+            // Start Conversion
+            LL_ADC_REG_StartConversion(ADC1);
+            last_data_index = 0;
+        }
     }
     if (step == 3 || step == 6) {                        // phase B pf0
-        current_state = PHASE_B_EXTI_PORT->IDR & PHASE_B_EXTI_PIN;
+        if (phase_num != 1) {  
+            phase_num = 1; 
+            // stop conversion
+            LL_ADC_REG_StopConversion(ADC1);
+            while (LL_ADC_REG_IsStopConversionOngoing(ADC1)) {
+            }
+            while (LL_ADC_REG_IsConversionOngoing(ADC1)) {
+            }
+            // Reset DMA
+            LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_1);
+            while (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_1)) {
+            }
+            LL_DMA_ClearFlag_GI1(DMA1);
+            LL_DMA_SetDataLength(DMA1,
+                    LL_DMA_CHANNEL_1,
+                    2*NUM_SAMPLES);
+            LL_DMA_EnableChannel(DMA1,
+                                LL_DMA_CHANNEL_1);
+
+            LL_ADC_REG_SetSequencerChannels(ADC1, LL_ADC_CHANNEL_4 | LL_ADC_CHANNEL_1);
+            LL_ADC_REG_SetSequencerScanDirection(ADC1, LL_ADC_REG_SEQ_SCAN_DIR_BACKWARD);
+            // Start Conversion
+            LL_ADC_REG_StartConversion(ADC1);
+            last_data_index = 0;
+        }
     }
-#else
-    current_state = !LL_COMP_ReadOutputLevel(active_COMP);  // polarity reversed
-#endif
-    if (rising) {
-        if (current_state) {
-            bemfcounter++;
+    if (!LL_ADC_REG_IsConversionOngoing(ADC1)) {
+        LL_ADC_REG_StartConversion(ADC1);
+    }
+    while (LL_ADC_IsActiveFlag_EOS(ADC1) == 0) {
+    }
+    uint16_t current_data_index = (2*NUM_SAMPLES) - LL_DMA_GetDataLength(DMA1, LL_DMA_CHANNEL_1);
+
+    if (current_data_index >= (2*NUM_SAMPLES - 1)) {
+        current_data_index = 2*NUM_SAMPLES - 2;
+    }
+
+    if (current_data_index % 2) {
+        current_data_index--;
+    }
+
+    if (current_data_index < last_data_index) {
+        last_data_index = 0;
+    }
+
+    for (uint16_t cnt = last_data_index; cnt < current_data_index; cnt+=2) {
+        if (rising) {
+            if ((ADCDataDMA[cnt] > (ADCDataDMA[cnt+1])) && (ADCDataDMA[cnt+1] != 0)) {
+                LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_7);
+                bemfcounter++;
+            }
+            if (cnt > 1) {
+                if ((ADCDataDMA[cnt] > (ADCDataDMA[cnt-1])) && (ADCDataDMA[cnt-1] != 0)) {
+                    LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_7);
+                    bemfcounter++;
+                }
+            }
         } else {
-            bad_count++;
-            if (bad_count > 2) {
-                bemfcounter = 0;
+            if ((ADCDataDMA[cnt] < (ADCDataDMA[cnt+1])) && (ADCDataDMA[cnt+1] != 0)) {
+                LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_7);
+                bemfcounter++;
+            }
+            if (cnt > 1) {
+                if ((ADCDataDMA[cnt] < (ADCDataDMA[cnt-1])) && (ADCDataDMA[cnt-1] != 0)) {
+                    LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_7);
+                    bemfcounter++;
+                }
             }
         }
-    } else {
-        if (!current_state) {
-            bemfcounter++;
-        } else {
-            bad_count++;
-            if (bad_count > 2) {
-                bemfcounter = 0;
-            }
-        }
     }
+    last_data_index = current_data_index;
+
+    // send_telem++;
+    // // if (send_telem > 10000) {
+    // //     do_send_telem = 1;
+    // // }
+    // // if (do_send_telem) {
+    //     if (buf_count >= 2 && send_telem > 1000) {
+    //         send_telem = 0;
+    //         if (sent_count < 2) {
+    //             LL_GPIO_TogglePin(GPIOB, LL_GPIO_PIN_7);
+    //             // copy values to aTxBuffer
+    //             for (uint16_t cnt = 0; cnt < (2*NUM_SAMPLES); cnt++) {
+    //                 aTxBuffer[cnt] = (uint8_t)(old_data[sent_count][cnt]);
+    //             }
+    //             send_telem_DMA();
+    //             sent_count++;
+    //         } else if (sent_count >= 2) {
+    //             for (uint16_t cnt = 0; cnt < (2*NUM_SAMPLES); cnt++) {
+    //                 aTxBuffer[cnt] = 0;
+    //             }
+    //             send_telem_DMA();
+    //             sent_count++;
+    //         }
+    //     }
+    // // }
+    // if (sent_count >= 4 && buf_count >= 2) {
+    //     sent_count = 0;
+    //     buf_count = 0;
+    // }
+
 }
 
 
@@ -861,7 +996,7 @@ void commutate()
         comStep(step);
     }
 
-    changeCompInput();
+    // changeCompInput();
 
     if (average_interval > 2000 && (stall_protection || RC_CAR_REVERSE)) {
         old_routine = 1;
@@ -891,60 +1026,12 @@ void PeriodElapsedCallback()
     advance = (commutation_interval>>3) * advance_level;   // 60 divde 8 7.5 degree increments
     waitTime = (commutation_interval >>1)  - advance;
     if (!old_routine) {
-        enableCompInterrupts();     // enable comp interrupt
+        // enableCompInterrupts();     // enable comp interrupt
     }
     if (zero_crosses<10000) {
         zero_crosses++;
     }
 
-}
-
-
-void interruptRoutine()
-{
-    if (average_interval > 125) {
-        if ((INTERVAL_TIMER->CNT < 125) && (duty_cycle < 600) && (zero_crosses < 500)) {   //should be impossible, desync?exit anyway
-            return;
-        }
-        if (INTERVAL_TIMER->CNT < (commutation_interval >> 1)) {
-            return;
-        }
-        stuckcounter++;             // stuck at 100 interrupts before the main loop happens again.
-        if (stuckcounter > 100) {
-            maskPhaseInterrupts();
-            zero_crosses = 0;
-            return;
-        }
-    }
-    thiszctime = INTERVAL_TIMER->CNT;
-    if (rising) {
-        for (int i = 0; i < filter_level; i++) {
-#ifdef MCU_F031
-            if ((current_GPIO_PORT->IDR & current_GPIO_PIN) == (uint32_t)GPIO_PIN_RESET) {
-#else
-            if (LL_COMP_ReadOutputLevel(active_COMP) == LL_COMP_OUTPUT_LEVEL_HIGH) {
-#endif
-                return;
-            }
-        }
-    } else {
-        for (int i = 0; i < filter_level; i++) {
-#ifdef MCU_F031
-            if ((current_GPIO_PORT->IDR & current_GPIO_PIN) != (uint32_t)GPIO_PIN_RESET) {
-#else
-            if (LL_COMP_ReadOutputLevel(active_COMP) == LL_COMP_OUTPUT_LEVEL_LOW) {
-#endif
-                return;
-            }
-        }
-    }
-    maskPhaseInterrupts();
-    INTERVAL_TIMER->CNT = 0 ;
-    waitTime = waitTime >> fast_accel;
-    COM_TIMER->CNT = 0;
-    COM_TIMER->ARR = waitTime;
-    COM_TIMER->SR = 0x00;
-    COM_TIMER->DIER |= (0x1UL << (0U));             // enable COM_TIMER interrupt
 }
 
 void startMotor()
@@ -955,7 +1042,7 @@ void startMotor()
         INTERVAL_TIMER->CNT = 5000;
         running = 1;
     }
-    enableCompInterrupts();
+    // enableCompInterrupts();
 }
 
 void tenKhzRoutine()
@@ -1214,6 +1301,8 @@ void tenKhzRoutine()
         TIM1->CCR1 = adjusted_duty_cycle;
         TIM1->CCR2 = adjusted_duty_cycle;
         TIM1->CCR3 = adjusted_duty_cycle;
+        TIM1->CCR4 = TIM1->ARR - 1;//(adjusted_duty_cycle*1/8) + 1;
+        // LL_ADC_REG_StartConversion(ADC1);
     }
     average_interval = e_com_time / 3;
     if (desync_check && zero_crosses > 10) {
@@ -1248,12 +1337,12 @@ void tenKhzRoutine()
 
     if (send_telemetry) {
 #ifdef	USE_SERIAL_TELEMETRY
-        makeTelemPackage(degrees_celsius,
-                         battery_voltage,
-                         actual_current,
-                         (uint16_t)consumed_current,
-                         e_rpm);
-        send_telem_DMA();
+        // makeTelemPackage(degrees_celsius,
+                        //  battery_voltage,
+                        //  actual_current,
+                        //  (uint16_t)consumed_current,
+                        //  e_rpm);
+        // send_telem_DMA();
         send_telemetry = 0;
 #endif
     }
@@ -1279,6 +1368,7 @@ void tenKhzRoutine()
             TIM1->CCR1 = 0;
             TIM1->CCR2 = 0;
             TIM1->CCR3 = 0;
+            TIM1->CCR4 = 0;
             IC_TIMER_REGISTER->PSC = 0;
             IC_TIMER_REGISTER->CNT = 0;
             for (int i = 0; i < 64; i++) {
@@ -1296,6 +1386,7 @@ void tenKhzRoutine()
             TIM1->CCR1 = 0;
             TIM1->CCR2 = 0;
             TIM1->CCR3 = 0;
+            TIM1->CCR4 = 0;
             IC_TIMER_REGISTER->PSC = 0;
             IC_TIMER_REGISTER->CNT = 0;
             for (int i = 0; i < 64; i++) {
@@ -1337,15 +1428,19 @@ void advanceincrement()
             phase_C_position = 359 ;
         }
     }
-#ifdef GIMBAL_MODE
-    TIM1->CCR1 = ((2*pwmSin[phase_A_position])+gate_drive_offset)*TIMER1_MAX_ARR/2000;
-    TIM1->CCR2 = ((2*pwmSin[phase_B_position])+gate_drive_offset)*TIMER1_MAX_ARR/2000;
-    TIM1->CCR3 = ((2*pwmSin[phase_C_position])+gate_drive_offset)*TIMER1_MAX_ARR/2000;
-#else
-    TIM1->CCR1 = (((2*pwmSin[phase_A_position]/SINE_DIVIDER)+gate_drive_offset)*TIMER1_MAX_ARR/2000)*sine_mode_power / 10;
-    TIM1->CCR2 = (((2*pwmSin[phase_B_position]/SINE_DIVIDER)+gate_drive_offset)*TIMER1_MAX_ARR/2000)*sine_mode_power / 10;
-    TIM1->CCR3 = (((2*pwmSin[phase_C_position]/SINE_DIVIDER)+gate_drive_offset)*TIMER1_MAX_ARR/2000)*sine_mode_power / 10;
-#endif
+// #ifdef GIMBAL_MODE
+//     TIM1->CCR1 = ((2*pwmSin[phase_A_position])+gate_drive_offset)*TIMER1_MAX_ARR/2000;
+//     TIM1->CCR2 = ((2*pwmSin[phase_B_position])+gate_drive_offset)*TIMER1_MAX_ARR/2000;
+//     TIM1->CCR3 = ((2*pwmSin[phase_C_position])+gate_drive_offset)*TIMER1_MAX_ARR/2000;
+//     TIM1->CCR4 = TIM1->ARR - 1;
+// #else
+//     TIM1->CCR1 = (((2*pwmSin[phase_A_position]/SINE_DIVIDER)+gate_drive_offset)*TIMER1_MAX_ARR/2000)*sine_mode_power / 10;
+//     TIM1->CCR2 = (((2*pwmSin[phase_B_position]/SINE_DIVIDER)+gate_drive_offset)*TIMER1_MAX_ARR/2000)*sine_mode_power / 10;
+//     TIM1->CCR3 = (((2*pwmSin[phase_C_position]/SINE_DIVIDER)+gate_drive_offset)*TIMER1_MAX_ARR/2000)*sine_mode_power / 10;
+//     TIM1->CCR4 = TIM1->ARR - 1;
+
+//     // LL_ADC_REG_StartConversion(ADC1);
+// #endif
 }
 
 
@@ -1366,14 +1461,14 @@ void zcfoundroutine()    // only used in polling mode, blocking routine.
     zero_crosses++;
     if (stall_protection || RC_CAR_REVERSE) {
         if (zero_crosses >= 20 && commutation_interval <= 2000) {
-            old_routine = 0;
-            enableCompInterrupts();          // enable interrupt
+            // old_routine = 0;
+            // enableCompInterrupts();          // enable interrupt
 
         }
     } else {
         if (zero_crosses > 30) {
-            old_routine = 0;
-            enableCompInterrupts();          // enable interrupt
+            // old_routine = 0;
+            // enableCompInterrupts();          // enable interrupt
 
         }
     }
@@ -1475,7 +1570,7 @@ int main(void)
     }
 
     if (use_sin_start) {
-        min_startup_duty = sin_mode_min_s_d;
+        // min_startup_duty = sin_mode_min_s_d;
     }
     if (dir_reversed == 1) {
         forward = 0;
@@ -1529,7 +1624,7 @@ int main(void)
     //bi_direction = 1;
     commutation_interval = 5000;
     use_sin_start = 0;
-    maskPhaseInterrupts();
+    //maskPhaseInterrupts();
     playBrushedStartupTune();
 #else
     playStartupTune();
@@ -1570,65 +1665,7 @@ int main(void)
 
 #endif
     while (1) {
-
         LL_IWDG_ReloadCounter(IWDG);
-
-        adc_counter++;
-        if (adc_counter>10) { // for adc and telemetry
-
-            ADC_CCR = TIM1->CCR3*2/3 + 1;  // sample current at quarter pwm on
-            if (ADC_CCR > tim1_arr) {
-                ADC_CCR = tim1_arr;
-            }
-            TIM1->CCR4 = ADC_CCR;
-
-            ADC_raw_temp = ADC_raw_temp - (temperature_offset);
-            converted_degrees =__LL_ADC_CALC_TEMPERATURE(3300,  ADC_raw_temp, LL_ADC_RESOLUTION_12B);
-            degrees_celsius =((7 * degrees_celsius) + converted_degrees) >> 3;
-
-            battery_voltage = ((7 * battery_voltage) + ((ADC_raw_volts * 3300 / 4095 * VOLTAGE_DIVIDER)/100)) >> 3;
-            smoothed_raw_current = ((63*smoothed_raw_current + (ADC_raw_current) )>>6);
-            actual_current = (smoothed_raw_current * 3300/41) / (MILLIVOLT_PER_AMP)  + CURRENT_OFFSET;
-            if (actual_current < 0) {
-                actual_current = 0;
-            }
-
-            LL_ADC_REG_StartConversion(ADC1);
-
-            if (LOW_VOLTAGE_CUTOFF) {
-                if (battery_voltage < (cell_count * low_cell_volt_cutoff)) {
-                    low_voltage_count++;
-                    if (low_voltage_count > (1000 - (stepper_sine * 900))) {
-                        input = 0;
-                        allOff();
-                        maskPhaseInterrupts();
-                        running = 0;
-                        zero_input_count = 0;
-                        armed = 0;
-
-                    }
-                } else {
-                    low_voltage_count = 0;
-                }
-            }
-            adc_counter = 0;
-#ifdef USE_ADC_INPUT
-            if (ADC_raw_input < 10) {
-                zero_input_count++;
-            } else {
-                zero_input_count=0;
-            }
-#endif
-        }
-#ifdef USE_ADC_INPUT
-
-        signaltimeout = 0;
-        ADC_smoothed_input = (((10*ADC_smoothed_input) + ADC_raw_input)/11);
-        newinput = ADC_smoothed_input / 2;
-        if (newinput > 2000) {
-            newinput = 2000;
-        }
-#endif
         stuckcounter = 0;
 
         if (bi_direction == 1 && dshot == 0) {
@@ -1673,7 +1710,7 @@ int main(void)
                             forward = 1 - dir_reversed;
                             zero_crosses = 0;
                             old_routine = 1;
-                            maskPhaseInterrupts();
+                            //maskPhaseInterrupts();
                             brushed_direction_set = 0;
                         } else {
                             newinput = 1000;
@@ -1687,7 +1724,7 @@ int main(void)
                             zero_crosses = 0;
                             old_routine = 1;
                             forward = dir_reversed;
-                            maskPhaseInterrupts();
+                            //maskPhaseInterrupts();
                             brushed_direction_set = 0;
                         } else {
                             newinput = 1000;
@@ -1710,7 +1747,7 @@ int main(void)
                         forward = 1 - dir_reversed;
                         zero_crosses = 0;
                         old_routine = 1;
-                        maskPhaseInterrupts();
+                        //maskPhaseInterrupts();
                         brushed_direction_set = 0;
                     } else {
                         newinput = 0;
@@ -1728,7 +1765,7 @@ int main(void)
                         zero_crosses = 0;
                         old_routine = 1;
                         forward = dir_reversed;
-                        maskPhaseInterrupts();
+                        //maskPhaseInterrupts();
                         brushed_direction_set = 0;
                     } else {
                         newinput = 0;
@@ -1778,7 +1815,7 @@ int main(void)
         }
         if (bemf_timeout_happened > bemf_timeout * ( 1 + (crawler_mode*100))&& stuck_rotor_protection) {
             allOff();
-            maskPhaseInterrupts();
+            //maskPhaseInterrupts();
             input = 0;
             bemf_timeout_happened = 102;
 #ifdef USE_RGB_LED
@@ -1876,7 +1913,7 @@ int main(void)
 
             /**************** old routine*********************/
             if (old_routine && running) {
-                maskPhaseInterrupts();
+                //maskPhaseInterrupts();
                 getBemfState();
                 if (!zcfound) {
                     if (rising) {
@@ -1895,7 +1932,7 @@ int main(void)
             if (INTERVAL_TIMER->CNT > 45000 && running == 1) {
                 bemf_timeout_happened ++;
 
-                maskPhaseInterrupts();
+                //maskPhaseInterrupts();
                 old_routine = 1;
                 if (input < 48) {
                     running = 0;
@@ -1914,7 +1951,7 @@ int main(void)
 
 #ifdef GIMBAL_MODE
             step_delay = 300;
-            maskPhaseInterrupts();
+            //maskPhaseInterrupts();
             allpwm();
             if (newinput>1000) {
                 desired_angle = map(newinput, 1000, 2000, 180, 360);
@@ -1943,10 +1980,11 @@ int main(void)
 
                     if (do_once_sinemode) {
                         COM_TIMER->DIER &= ~((0x1UL << (0U)));  // disable commutation interrupt in case set
-                        maskPhaseInterrupts();
+                        //maskPhaseInterrupts();
                         TIM1->CCR1 = 0;
                         TIM1->CCR2 = 0;
                         TIM1->CCR3 = 0;
+                        TIM1->CCR4 = 0;
                         allpwm();
                         do_once_sinemode = 0;
                     }
@@ -1996,7 +2034,8 @@ int main(void)
                     TIM1->CCR1 = adjusted_duty_cycle;
                     TIM1->CCR2 = adjusted_duty_cycle;
                     TIM1->CCR3 = adjusted_duty_cycle;
-
+                    TIM1->CCR4 = TIM1->ARR - 1;
+                    // LL_ADC_REG_StartConversion(ADC1);
                     prop_brake_active = 1;
 #else
                     // todo add braking for PWM /enable style bridges.
@@ -2005,6 +2044,7 @@ int main(void)
                     TIM1->CCR1 = 0;
                     TIM1->CCR2 = 0;
                     TIM1->CCR3 = 0;
+                    TIM1->CCR4 = 0;
                     allOff();
                 }
             }
@@ -2037,6 +2077,8 @@ int main(void)
             TIM1->CCR1 = input;												// set duty cycle to 50 out of 768 to start.
             TIM1->CCR2 = input;
             TIM1->CCR3 = input;
+            TIM1->CCR4 = TIM1->ARR - 1;
+            // LL_ADC_REG_StartConversion(ADC1);
         } else {
 
             TIM1->CCR1 = 0;												// set duty cycle to 50 out of 768 to start.

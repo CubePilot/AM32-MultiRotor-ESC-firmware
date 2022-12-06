@@ -261,17 +261,26 @@ void DMA1_Channel4_5_IRQHandler(void)
 /**
   * @brief This function handles ADC and COMP interrupts (COMP interrupts through EXTI lines 21 and 22).
   */
+extern uint8_t phase_num;
+extern uint32_t running_time;
+extern uint32_t runtime;
 void ADC1_COMP_IRQHandler(void)
 {
 //	TIM17->CNT = 0;
   /* USER CODE BEGIN ADC1_COMP_IRQn 0 */
 	  if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_21) != RESET)
 	  {
-	    /* Clear flag of EXTI */
-	    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_21);
+	    // /* Clear flag of EXTI */
+	    // LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_21);
 
-	    /* Call interruption treatment function */
-	    interruptRoutine();
+	    // /* Call interruption treatment function */
+		// // if (phase_num == 0) {
+		// 	// LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_6);
+		// 	// LL_GPIO_TogglePin(GPIOB, LL_GPIO_PIN_7);
+		// // }
+	    // if (running_time <= runtime) {
+		// 	interruptRoutine();
+		// }
 	  }
   /* USER CODE END ADC1_COMP_IRQn 0 */
 	//  process_time = TIM17->CNT;
