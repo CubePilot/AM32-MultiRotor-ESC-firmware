@@ -61,9 +61,9 @@
 #define USE_SERIAL_TELEMETRY
 #endif
 
-#ifdef ARDUBEE
-#define FIRMWARE_NAME           "ArduBee     "
-#define DEAD_TIME               13
+#ifdef HSOON
+#define FIRMWARE_NAME           "HexSoon     "
+#define DEAD_TIME               20
 #define HARDWARE_GROUP_F0_B
 #define USE_SERIAL_TELEMETRY
 #endif
