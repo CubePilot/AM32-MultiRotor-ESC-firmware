@@ -48,7 +48,8 @@ jobs:
           python bin2hexp.py -A 0x08000000 -b PB4_BOOTLOADER_V11.bin -o obj/bootloader.hex
           python bin2hexp.py -A 0x08007c00 -b eeprom_version_1_7c00.bin -o obj/eeprom.hex
           echo obj/hsoon.hex
-          echo python -c "original = IntelHex("foo.hex"); new = IntelHex("bar.hex"); original.merge(new, overlap='replace');"
+          echo AM32_HSOON_1.92.hex
+          echo python -c "original = IntelHex("obj/bootloader.hex"); new = IntelHex("obj/eeprom.hex"); original.merge(new, overlap='replace');new = IntelHex("obj/AM32_HSOON_1.92.hex"); original.merge(new, overlap='replace');"
           
       - name: Upload Bin Files
         uses: actions/upload-artifact@v2
