@@ -44,7 +44,11 @@ jobs:
       - name: Build All Targets
         run: |
           make all
-
+          echo PA2_BOOTLOADER_V11.bin
+          echo eeprom_version_1_7c00.bin
+          echo obj/hsoon.hex
+          echo python -c "original = IntelHex("foo.hex"); new = IntelHex("bar.hex"); original.merge(new, overlap='replace');"
+          
       - name: Upload Bin Files
         uses: actions/upload-artifact@v2
         with:
