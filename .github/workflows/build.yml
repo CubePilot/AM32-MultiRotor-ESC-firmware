@@ -44,8 +44,9 @@ jobs:
       - name: Build All Targets
         run: |
           make all
-          echo PB4_BOOTLOADER_V11.bin
-          echo eeprom_version_1_7c00.bin
+          wget https://gist.github.com/pavel-a/89d71b3aba9d7a9e6f8a61d728b08a8e/raw/7531987ba59997cddc3bd31fca8c69dd43fdafe2/bin2hexp.py
+          python bin2hexp.py -A 0x08000000 -b PB4_BOOTLOADER_V11.bin -o obj/bootloader.hex
+          python bin2hexp.py -A 0x08007c00 -b eeprom_version_1_7c00.bin -o obj/eeprom.hex
           echo obj/hsoon.hex
           echo python -c "original = IntelHex("foo.hex"); new = IntelHex("bar.hex"); original.merge(new, overlap='replace');"
           
