@@ -50,7 +50,7 @@ jobs:
           echo obj/hsoon.hex
           echo AM32_HSOON_1.92.hex
           pip install intelhex
-          python -c "import intelhex; original = intelhex('obj/bootloader.hex'); new = intelhex('obj/eeprom.hex'); original.merge(new, overlap='replace');new = intelhex('obj/AM32_HSOON_1.92.hex'); original.merge(new, overlap='replace'); original.write_hex_file('obj/all.hex')"
+          #python -c "import intelhex; original = intelhex('obj/bootloader.hex'); new = intelhex('obj/eeprom.hex'); original.merge(new, overlap='replace');new = intelhex('obj/AM32_HSOON_1.92.hex'); original.merge(new, overlap='replace'); original.write_hex_file('obj/all.hex')"
           
       - name: Upload Bin Files
         uses: actions/upload-artifact@v2
